@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import inject from '@rollup/plugin-inject'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import inject from '@rollup/plugin-inject';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
-import  NodeModulesPolyfillPlugin  from '@esbuild-plugins/node-modules-polyfill';
-// https://vite.dev/config/
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   define: {
@@ -20,15 +20,14 @@ export default defineConfig({
         NodeGlobalsPolyfillPlugin({
           process: true,
           buffer: true,
-        }) as any,
-        
+        }),
+        NodeModulesPolyfillPlugin(), // Moved here for esbuild
       ],
     },
   },
   build: {
     rollupOptions: {
       plugins: [
-        NodeModulesPolyfillPlugin(),
         inject({
           Buffer: ['buffer', 'Buffer'],
         }),
@@ -40,4 +39,4 @@ export default defineConfig({
       buffer: 'buffer',
     },
   },
-})
+});
